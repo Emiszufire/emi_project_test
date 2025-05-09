@@ -7,18 +7,15 @@ import getpass
 def pytest_configure(config):
     config.stash[metadata_key]["designer"] = "Tester"
     config.stash[metadata_key]["datetime"] = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-    config.stash[metadata_key]["datetime"] = str(datetime.now().astimezone(timezone.utc))
+    # config.stash[metadata_key]["datetime"] = str(datetime.now().astimezone(timezone.utc)).strftime('%Y-%m-%d %H:%M:%S'))
     config.stash[metadata_key]["user"] = getpass.getuser()
 
 
 @pytest.fixture(scope="module")
 def browser(request):
+    browser_name = request.config.getoption("--browser")[0]
     with sync_playwright() as p:
-        browser_type = request.config.getoption("--browser")
-        if browser_type == "firefox":
-            browser = p.firefox.launch(headless=False, slow_mo=1000, args=["--start-maximized"])
-        elif browser_type == "chromium":
-            browser = p.chromium.launch(headless=False, slow_mo=1000, args=["--start-maximized"])
+        browser = getattr(p, browser_name).launch(headless=False, slow_mo=1000, args=["--start-maximized"])
         request.config.stash[metadata_key]["browser"] = f'{browser.browser_type.name} {browser.version}'
         yield browser
         browser.close()
