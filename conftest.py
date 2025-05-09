@@ -10,18 +10,54 @@ def pytest_configure(config):
     config.stash[metadata_key]["datetime"] = str(datetime.now().astimezone(timezone.utc))
     config.stash[metadata_key]["user"] = getpass.getuser()
 
-@pytest.fixture(scope="session")
+
+@pytest.fixture(scope="module")
 def browser(request):
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False, slow_mo=2000, args=["--start-maximized"])
+        browser_type = request.config.getoption("--browser")
+        if browser_type == "firefox":
+            browser = p.firefox.launch(headless=False, slow_mo=1000, args=["--start-maximized"])
+        elif browser_type == "chromium":
+            browser = p.chromium.launch(headless=False, slow_mo=1000, args=["--start-maximized"])
         request.config.stash[metadata_key]["browser"] = f'{browser.browser_type.name} {browser.version}'
         yield browser
         browser.close()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def page(browser):
     context = browser.new_context(no_viewport=True)
     page = context.new_page()
     yield page
     context.close()
+
+
+@pytest.fixture(scope="class")
+def open_textbox_url(page):
+    page.goto("https://demoqa.com/text-box")
+
+
+@pytest.fixture(scope="class")
+def do_operations_textbox(open_textbox_url, page):
+    page.get_by_role(role='textbox', name='Full Name').fill("John Doe")
+    page.get_by_role(role='textbox', name='name@example.com').fill("john@doe.com")
+    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, USA.")
+    page.locator('#permanentAddress').fill("Sometown, ST 12345, USA.")
+
+    page.get_by_role(role='button', name='Submit').click()
+    page.wait_for_timeout(500)
+
+
+@pytest.fixture(scope="class")
+def get_textbox_locators(do_operations_textbox, page):
+    name = page.locator("#name")
+    email = page.locator("#email")
+    current_address = page.locator("#currentAddress")
+    permanent_address = page.locator("#permanentAddress")
+    locators = {
+        "name": name,
+        "email": email,
+        "current_address": current_address,
+        "permanent_address": permanent_address
+    }
+    return locators
