@@ -4,16 +4,31 @@ from pytest_metadata.plugin import metadata_key
 from datetime import datetime, timezone
 import getpass
 
+
 def pytest_configure(config):
     config.stash[metadata_key]["designer"] = "Tester"
-    config.stash[metadata_key]["datetime"] = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-    # config.stash[metadata_key]["datetime"] = str(datetime.now().astimezone(timezone.utc)).strftime('%Y-%m-%d %H:%M:%S'))
+    config.stash[metadata_key]["datetime"] = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S %z')
     config.stash[metadata_key]["user"] = getpass.getuser()
 
+
+# def pytest_addoption(parser):
+#     parser.addoption(
+#         "--slow_motion",
+#         action="store",
+#         default=1000,
+#         help="Browser slow motion in milliseconds",
+#     )
+#     parser.addoption(
+#         "--headless",
+#         action="store_true",
+#         default=False,
+#         help="Run tests in headless mode.",
+#     )
 
 @pytest.fixture(scope="module")
 def browser(request):
     browser_name = request.config.getoption("--browser")[0]
+    # headless = request.config.getoption("--headless")
     with sync_playwright() as p:
         browser = getattr(p, browser_name).launch(headless=False, slow_mo=1000, args=["--start-maximized"])
         request.config.stash[metadata_key]["browser"] = f'{browser.browser_type.name} {browser.version}'
@@ -30,8 +45,17 @@ def page(browser):
 
 
 @pytest.fixture(scope="class")
+def open_main_url(page):
+    page.goto("https://demoqa.com/elements")
+
+
+@pytest.fixture(scope="class")
 def open_textbox_url(page):
     page.goto("https://demoqa.com/text-box")
+
+@pytest.fixture(scope="class")
+def open_radiobutton_url(page):
+    page.goto("https://demoqa.com/radio-button")
 
 
 @pytest.fixture(scope="class")

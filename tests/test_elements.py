@@ -2,9 +2,9 @@ from playwright.sync_api import expect
 
 
 class TestMainPage:
-    def test_page_has_title(self, page):
-        page.goto("https://demoqa.com/elements")
+    def test_page_has_title(self, open_main_url, page):
         expect(page).to_have_title("DEMOQA")
+
 
 class TestTextBox:
     def test_name(self, get_textbox_locators):
@@ -26,3 +26,28 @@ class TestTextBox:
         actual = get_textbox_locators.get('permanent_address').all_text_contents()[1]
         expected = "Permanent Address:Sometown, ST 12345, USA."
         assert actual == expected, f"Actual value '{actual}' does not match expected value '{expected}'"
+
+class TestRadioButton:
+    def test_yes_visible(self, open_radiobutton_url, page):
+        locator = page.get_by_role(role='radio', name='Yes')
+        expect(locator).to_be_visible()
+
+    def test_impressive_visible(self, open_radiobutton_url, page):
+        locator = page.get_by_role(role='radio', name='Impressive')
+        expect(locator).to_be_visible()
+
+    def test_no_visible(self, open_radiobutton_url, page):
+        locator = page.get_by_role(role='radio', name='No')
+        expect(locator).to_be_visible()
+
+    def test_yes_enable(self, open_radiobutton_url, page):
+        locator = page.get_by_role(role='radio', name='Yes')
+        expect(locator).to_be_enabled()
+
+    def test_impressive_enable(self, open_radiobutton_url, page):
+        locator = page.get_by_role(role='radio', name='Impressive')
+        expect(locator).to_be_enabled()
+
+    def test_no_enable(self, open_radiobutton_url, page):
+        locator = page.get_by_role(role='radio', name='No')
+        expect(locator).to_be_enabled()
