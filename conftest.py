@@ -14,16 +14,18 @@ def pytest_configure(config):
 @pytest.fixture(scope="module")
 def browser(request):
     browser_name = request.config.getoption("--browser")[0]
-    headed = not(request.config.getoption("--headed"))
+    headed = request.config.getoption("--headed")
     slow_mo = request.config.getoption("--slowmo")
     with sync_playwright() as p:
-        browser = getattr(p, browser_name).launch(headless=headed, slow_mo=slow_mo, args=["--start-maximized"])
+        browser = getattr(p, browser_name).launch(headless=not(headed), slow_mo=slow_mo, args=["--start-maximized"])
         request.config.stash[metadata_key]["browser"] = f'{browser.browser_type.name} {browser.version}'
+        request.config.stash[metadata_key]["browser headed"] = headed
+        request.config.stash[metadata_key]["browser slow motion"] = slow_mo
         yield browser
         browser.close()
 
 
-@pytest.fixture(scope="class")
+@pytest.fixture(scope="module")
 def page(browser):
     context = browser.new_context(no_viewport=True)
     page = context.new_page()
@@ -36,7 +38,6 @@ def page(browser):
 @pytest.fixture(scope="class")
 def open_main_url(page):
     page.goto("https://demoqa.com/elements")
-
 
 @pytest.fixture(scope="class")
 def open_textbox_url(page):
