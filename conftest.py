@@ -11,26 +11,13 @@ def pytest_configure(config):
     config.stash[metadata_key]["user"] = getpass.getuser()
 
 
-# def pytest_addoption(parser):
-#     parser.addoption(
-#         "--slow_motion",
-#         action="store",
-#         default=1000,
-#         help="Browser slow motion in milliseconds",
-#     )
-#     parser.addoption(
-#         "--headless",
-#         action="store_true",
-#         default=False,
-#         help="Run tests in headless mode.",
-#     )
-
 @pytest.fixture(scope="module")
 def browser(request):
     browser_name = request.config.getoption("--browser")[0]
-    # headless = request.config.getoption("--headless")
+    headed = not(request.config.getoption("--headed"))
+    slow_mo = request.config.getoption("--slowmo")
     with sync_playwright() as p:
-        browser = getattr(p, browser_name).launch(headless=False, slow_mo=1000, args=["--start-maximized"])
+        browser = getattr(p, browser_name).launch(headless=headed, slow_mo=slow_mo, args=["--start-maximized"])
         request.config.stash[metadata_key]["browser"] = f'{browser.browser_type.name} {browser.version}'
         yield browser
         browser.close()
@@ -40,7 +27,9 @@ def browser(request):
 def page(browser):
     context = browser.new_context(no_viewport=True)
     page = context.new_page()
+    context.tracing.start(screenshots=True, snapshots=True, sources=True)
     yield page
+    context.tracing.stop(path="trace.zip")
     context.close()
 
 

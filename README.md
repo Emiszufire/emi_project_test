@@ -15,6 +15,16 @@ pip install -r requirements.txt
 ```
 
 ## PLAYWRIGHT
+1. Install Playwright
 ```bash
 playwright install
 ```
+2. To see playwright trace
+```bash
+playwright show-trace tests/trace.zip
+```
+3. To identify locators
+```bash
+playwright open https://demoqa.com/elements
+```
+
