@@ -1,14 +1,45 @@
+import os
+
 import pytest
+import pytest_html
 from playwright.sync_api import sync_playwright
 from pytest_metadata.plugin import metadata_key
 from datetime import datetime, timezone
 import getpass
+from PIL import ImageGrab
 
 
 def pytest_configure(config):
     config.stash[metadata_key]["designer"] = "Tester"
     config.stash[metadata_key]["datetime"] = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S %z')
     config.stash[metadata_key]["user"] = getpass.getuser()
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+    extras = getattr(report, "extras", [])
+
+    if report.when == "call":
+        # # Always add a URL to the report
+        # extras.append(pytest_html.extras.url("http://www.example.com/"))
+        xfail = hasattr(report, "wasxfail")
+        if (report.skipped and xfail) or (report.failed and not xfail):
+            # # Add custom HTML
+            # extras.append(pytest_html.extras.html("<div>Additional HTML</div>"))
+            # Take and attach a screenshot
+            try:
+                screenshots_dir = "screenshots"
+                os.makedirs(screenshots_dir, exist_ok=True)
+                timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                filename = f"{item.name}_{timestamp}.png"
+                filepath = os.path.join(screenshots_dir, filename)
+                ImageGrab.grab().save(filepath)
+                extras.append(pytest_html.extras.image(filepath))
+            except Exception as e:
+                print(f"Screenshot failed: {e}")
+
+        report.extras = extras
 
 
 @pytest.fixture(scope="module")
@@ -55,9 +86,27 @@ def do_operations_textbox(open_textbox_url, page):
     page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, USA.")
     page.locator('#permanentAddress').fill("Sometown, ST 12345, USA.")
 
+@pytest.fixture(scope="class")
+def click_submit(open_textbox_url, page):
     page.get_by_role(role='button', name='Submit').click()
+
     page.wait_for_timeout(500)
 
+@pytest.fixture(scope="class")
+def do_operations_textbox_fullname(open_textbox_url, page):
+    page.get_by_role(role='textbox', name='Full Name').fill("John Doe")
+
+@pytest.fixture(scope="class")
+def do_operations_textbox_nameexamplecom(open_textbox_url, page):
+    page.get_by_role(role='textbox', name='name@example.com').fill("john@doe.com")
+
+@pytest.fixture(scope="class")
+def do_operations_textbox_currentaddress(open_textbox_url, page):
+    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, USA.")
+
+@pytest.fixture(scope="class")
+def do_operations_textbox_permanentaddress(open_textbox_url, page):
+    page.locator('#permanentAddress').fill("Sometown, ST 12345, USA.")
 
 @pytest.fixture(scope="class")
 def get_textbox_locators(do_operations_textbox, page):
@@ -72,3 +121,8 @@ def get_textbox_locators(do_operations_textbox, page):
         "permanent_address": permanent_address
     }
     return locators
+
+@pytest.fixture(scope="class")
+def get_textbox_locators(page):
+    name = page.locator("#name")
+    return name
