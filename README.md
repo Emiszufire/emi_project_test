@@ -27,4 +27,8 @@ playwright show-trace tests/trace.zip
 ```bash
 playwright open https://demoqa.com/elements
 ```
-
+## PYCODESTYLE
+1. In root folder run below command to check PEP8 coding standards
+```bash
+pycodestyle tests/
+```

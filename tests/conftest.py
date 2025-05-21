@@ -14,6 +14,7 @@ def pytest_configure(config):
     config.stash[metadata_key]["datetime"] = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S %z')
     config.stash[metadata_key]["user"] = getpass.getuser()
 
+
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
@@ -48,7 +49,7 @@ def browser(request):
     headed = request.config.getoption("--headed")
     slow_mo = request.config.getoption("--slowmo")
     with sync_playwright() as p:
-        browser = getattr(p, browser_name).launch(headless=not(headed), slow_mo=slow_mo, args=["--start-maximized"])
+        browser = getattr(p, browser_name).launch(headless=not (headed), slow_mo=slow_mo, args=["--start-maximized"])
         request.config.stash[metadata_key]["browser"] = f'{browser.browser_type.name} {browser.version}'
         request.config.stash[metadata_key]["browser headed"] = headed
         request.config.stash[metadata_key]["browser slow motion"] = slow_mo
@@ -70,9 +71,11 @@ def page(browser):
 def open_main_url(page):
     page.goto("https://demoqa.com/elements")
 
+
 @pytest.fixture(scope="class")
 def open_textbox_url(page):
     page.goto("https://demoqa.com/text-box")
+
 
 @pytest.fixture(scope="class")
 def open_radiobutton_url(page):
@@ -80,49 +83,5 @@ def open_radiobutton_url(page):
 
 
 @pytest.fixture(scope="class")
-def do_operations_textbox(open_textbox_url, page):
-    page.get_by_role(role='textbox', name='Full Name').fill("John Doe")
-    page.get_by_role(role='textbox', name='name@example.com').fill("john@doe.com")
-    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, USA.")
-    page.locator('#permanentAddress').fill("Sometown, ST 12345, USA.")
-
-@pytest.fixture(scope="class")
-def click_submit(open_textbox_url, page):
-    page.get_by_role(role='button', name='Submit').click()
-
-    page.wait_for_timeout(500)
-
-@pytest.fixture(scope="class")
-def do_operations_textbox_fullname(open_textbox_url, page):
-    page.get_by_role(role='textbox', name='Full Name').fill("John Doe")
-
-@pytest.fixture(scope="class")
-def do_operations_textbox_nameexamplecom(open_textbox_url, page):
-    page.get_by_role(role='textbox', name='name@example.com').fill("john@doe.com")
-
-@pytest.fixture(scope="class")
-def do_operations_textbox_currentaddress(open_textbox_url, page):
-    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, USA.")
-
-@pytest.fixture(scope="class")
-def do_operations_textbox_permanentaddress(open_textbox_url, page):
-    page.locator('#permanentAddress').fill("Sometown, ST 12345, USA.")
-
-@pytest.fixture(scope="class")
-def get_textbox_locators(do_operations_textbox, page):
-    name = page.locator("#name")
-    email = page.locator("#email")
-    current_address = page.locator("#currentAddress")
-    permanent_address = page.locator("#permanentAddress")
-    locators = {
-        "name": name,
-        "email": email,
-        "current_address": current_address,
-        "permanent_address": permanent_address
-    }
-    return locators
-
-@pytest.fixture(scope="class")
-def get_textbox_locators(page):
-    name = page.locator("#name")
-    return name
+def open_slider_url(page):
+    page.goto("https://demoqa.com/slider")

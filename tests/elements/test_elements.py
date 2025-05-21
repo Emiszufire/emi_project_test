@@ -27,10 +27,11 @@ class TestTextBox:
         expected = "Permanent Address:Sometown, ST 12345, USA."
         assert actual == expected, f"Actual value '{actual}' does not match expected value '{expected}'"
 
-    def test_three_true(self, do_operations_textbox_fullname,do_operations_textbox_nameexamplecom,do_operations_textbox_currentaddress, click_submit, get_textbox_locators, page):
+    def test_three_true(self, do_operations_textbox_fullname, do_operations_textbox_nameexamplecom, do_operations_textbox_currentaddress, click_submit, get_textbox_locators, page):
         actual = get_textbox_locators
         expected = "Name:John Doe"
         expect(actual).to_have_text(expected)
+
 
 class TestRadioButton:
     def test_yes_visible(self, open_radiobutton_url, page):

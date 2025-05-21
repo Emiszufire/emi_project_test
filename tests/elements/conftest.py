@@ -1,0 +1,66 @@
+import pytest
+
+
+@pytest.fixture(scope="class")
+def do_operations_textbox(open_textbox_url, page):
+    page.get_by_role(role='textbox', name='Full Name').fill("John Doe")
+    page.get_by_role(role='textbox', name='name@example.com').fill("john@doe.com")
+    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, USA.")
+    page.locator('#permanentAddress').fill("Sometown, ST 12345, USA.")
+
+
+@pytest.fixture(scope="class")
+def click_submit(open_textbox_url, page):
+    page.get_by_role(role='button', name='Submit').click()
+    page.wait_for_timeout(500)
+
+
+@pytest.fixture(scope="class")
+def do_operations_textbox_fullname(open_textbox_url, page):
+    page.get_by_role(role='textbox', name='Full Name').fill("John Doe")
+
+
+@pytest.fixture(scope="class")
+def do_operations_textbox_nameexamplecom(open_textbox_url, page):
+    page.get_by_role(role='textbox', name='name@example.com').fill("john@doe.com")
+
+
+@pytest.fixture(scope="class")
+def do_operations_textbox_nameexamplecommiastake1(open_textbox_url, page):
+    page.get_by_role(role='textbox', name='name@example.com').fill("johndoe.com")
+
+
+@pytest.fixture(scope="class")
+def do_operations_textbox_nameexamplecommiastake2(open_textbox_url, page):
+    page.get_by_role(role='textbox', name='name@example.com').fill("john@doecom")
+
+
+@pytest.fixture(scope="class")
+def do_operations_textbox_currentaddress(open_textbox_url, page):
+    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, USA.")
+
+
+@pytest.fixture(scope="class")
+def do_operations_textbox_permanentaddress(open_textbox_url, page):
+    page.locator('#permanentAddress').fill("Sometown, ST 12345, USA.")
+
+
+@pytest.fixture(scope="class")
+def get_textbox_locators(do_operations_textbox, page):
+    name = page.locator("#name")
+    email = page.locator("#email")
+    current_address = page.locator("#currentAddress")
+    permanent_address = page.locator("#permanentAddress")
+    locators = {
+        "name": name,
+        "email": email,
+        "current_address": current_address,
+        "permanent_address": permanent_address
+    }
+    return locators
+
+
+@pytest.fixture(scope="class")
+def get_textbox_locators(page):
+    name = page.locator("#name")
+    return name
