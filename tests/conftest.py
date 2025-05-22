@@ -85,3 +85,8 @@ def open_radiobutton_url(page):
 @pytest.fixture(scope="class")
 def open_slider_url(page):
     page.goto("https://demoqa.com/slider")
+
+
+@pytest.fixture(scope="class")
+def open_accordian_url(page):
+    page.goto("https://demoqa.com/accordian")

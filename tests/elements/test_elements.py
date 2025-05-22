@@ -73,8 +73,5 @@ class TestRadioButton:
         expect(impressive_radio_locator).to_be_checked()
 
     def test_no_checked(self, open_radiobutton_url, page):
-        no_label_locator = page.locator('label[for="noRadio"]')
         no_radio_locator = page.locator('#noRadio')
         expect(no_radio_locator).not_to_be_checked()
-    #     no_label_locator.click()
-    #     expect(no_radio_locator).to_be_checked()
