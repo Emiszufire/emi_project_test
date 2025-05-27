@@ -95,3 +95,6 @@ def open_accordian_url(page):
 @pytest.fixture(scope="class")
 def open_date_picker_url(page):
     page.goto("https://demoqa.com/date-picker")
+
+def highlight(locator, thickness=3, style='solid', color='blue'):
+    locator.evaluate(f"element => element.style.outline = '{str(thickness)}px {style} {color}'")

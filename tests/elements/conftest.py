@@ -70,10 +70,10 @@ def click_submit(page):
 
 @pytest.fixture(scope="class")
 def get_textbox_locators(do_operations_textbox, click_submit, page):
-    name = page.locator("#name")
-    email = page.locator("#email")
-    current_address = page.locator("#currentAddress")
-    permanent_address = page.locator("#permanentAddress")
+    name = page.locator("#name.mb-1")
+    email = page.locator("#email.mb-1")
+    current_address = page.locator("#currentAddress.mb-1")
+    permanent_address = page.locator("#permanentAddress.mb-1")
     locators = {
         "name": name,
         "email": email,
@@ -84,10 +84,10 @@ def get_textbox_locators(do_operations_textbox, click_submit, page):
 
 @pytest.fixture(scope="class")
 def get_textbox_locators_without_email(do_operations_textbox_without_email, click_submit, page):
-    name = page.locator("#name")
-    email = page.locator("#email")
-    current_address = page.locator("#currentAddress")
-    permanent_address = page.locator("#permanentAddress")
+    name = page.locator("#name.mb-1")
+    email = page.locator("#email.mb-1")
+    current_address = page.locator("#currentAddress.mb-1")
+    permanent_address = page.locator("#permanentAddress.mb-1")
     locators = {
         "name": name,
         "email": email,
@@ -98,10 +98,10 @@ def get_textbox_locators_without_email(do_operations_textbox_without_email, clic
 
 @pytest.fixture(scope="class")
 def get_textbox_locators_wrong_email_one(do_operations_textbox_wrong_email_one, click_submit, page):
-    name = page.locator("#name")
-    email = page.locator("#email")
-    current_address = page.locator("#currentAddress")
-    permanent_address = page.locator("#permanentAddress")
+    name = page.locator("#name.mb-1")
+    email = page.locator("#email.mb-1")
+    current_address = page.locator("#currentAddress.mb-1")
+    permanent_address = page.locator("#permanentAddress.mb-1")
     locators = {
         "name": name,
         "email": email,
@@ -112,10 +112,10 @@ def get_textbox_locators_wrong_email_one(do_operations_textbox_wrong_email_one, 
 
 @pytest.fixture(scope="class")
 def get_textbox_locators_wrong_email_two(do_operations_textbox_wrong_email_two, click_submit, page):
-    name = page.locator("#name")
-    email = page.locator("#email")
-    current_address = page.locator("#currentAddress")
-    permanent_address = page.locator("#permanentAddress")
+    name = page.locator("#name.mb-1")
+    email = page.locator("#email.mb-1")
+    current_address = page.locator("#currentAddress.mb-1")
+    permanent_address = page.locator("#permanentAddress.mb-1")
     locators = {
         "name": name,
         "email": email,
