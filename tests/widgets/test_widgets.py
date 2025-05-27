@@ -24,3 +24,9 @@ class TestAccordian:
     def test_change_accordian_panel3(self, page, open_accordian_third):
         locator = page.locator("#section3Content")
         expect(locator).to_contain_text("It is a long established")
+
+class TestDatePicker:
+    def test_date_picker(self, page, selection_date_picker):
+        locator = page.locator("#datePickerMonthYearInput")
+        expect(locator).to_contain_text("April 7, 2000")
+

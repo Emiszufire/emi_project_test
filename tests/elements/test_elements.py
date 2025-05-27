@@ -27,11 +27,59 @@ class TestTextBox:
         expected = "Permanent Address:Sometown, ST 12345, USA."
         assert actual == expected, f"Actual value '{actual}' does not match expected value '{expected}'"
 
-    def test_three_true(self, do_operations_textbox_fullname, do_operations_textbox_nameexamplecom, do_operations_textbox_currentaddress, click_submit, get_textbox_locators, page):
-        actual = get_textbox_locators
+class TestTextBoxWithoutEmail:
+    def test_name_without_email(self, get_textbox_locators_without_email):
+        actual = get_textbox_locators_without_email.get('name')
         expected = "Name:John Doe"
         expect(actual).to_have_text(expected)
 
+    def test_email_attached_without_email(self, get_textbox_locators_without_email):
+        actual = get_textbox_locators_without_email.get('email')
+        expect(actual).not_to_be_attached()
+
+    def test_current_address_without_email(self, get_textbox_locators_without_email):
+        actual = get_textbox_locators_without_email.get('current_address').all_text_contents()[1]
+        expected = "Current Address :Anytown, ST 12345, USA."
+        assert actual == expected, f"Actual value '{actual}' does not match expected value '{expected}'"
+
+    def test_permanent_address_without_email(self, get_textbox_locators_without_email):
+        actual = get_textbox_locators_without_email.get('permanent_address').all_text_contents()[1]
+        expected = "Permanent Address:Sometown, ST 12345, USA."
+        assert actual == expected, f"Actual value '{actual}' does not match expected value '{expected}'"
+
+class TestTextBoxWrongEmailOne:
+    def test_name_wrong_email_one(self, get_textbox_locators_wrong_email_one):
+        actual = get_textbox_locators_wrong_email_one.get('name')
+        expect(actual).not_to_be_visible()
+
+    def test_email_wrong_email_one(self, get_textbox_locators_wrong_email_one):
+        actual = get_textbox_locators_wrong_email_one.get('email')
+        expect(actual).not_to_be_visible()
+
+    def test_current_address_wrong_email_one(self, get_textbox_locators_wrong_email_one):
+        actual = get_textbox_locators_wrong_email_one.get('current_address')
+        expect(actual).not_to_be_attached()
+
+    def test_permanent_address_wrong_email_one(self, get_textbox_locators_wrong_email_one):
+        actual = get_textbox_locators_wrong_email_one.get('permanent_address').all_text_contents()[1]
+        expect(actual).not_to_be_visible()
+
+class TestTextBoxWrongEmailTwo:
+    def test_name_wrong_email_two(self, get_textbox_locators_wrong_email_two):
+        actual = get_textbox_locators_wrong_email_two.get('name')
+        expect(actual).not_to_be_visible()
+
+    def test_email_wrong_email_two(self, get_textbox_locators_wrong_email_two):
+        actual = get_textbox_locators_wrong_email_two.get('email')
+        expect(actual).not_to_be_visible()
+
+    def test_current_address_wrong_email_two(self, get_textbox_locators_wrong_email_two):
+        actual = get_textbox_locators_wrong_email_two.get('current_address').all_text_contents()[1]
+        expect(actual).not_to_be_visible()
+
+    def test_permanent_address_wrong_email_two(self, get_textbox_locators_wrong_email_two):
+        actual = get_textbox_locators_wrong_email_two.get('permanent_address').all_text_contents()[1]
+        expect(actual).not_to_be_visible()
 
 class TestRadioButton:
     def test_yes_visible(self, open_radiobutton_url, page):
