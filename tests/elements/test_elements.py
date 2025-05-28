@@ -41,7 +41,6 @@ class TestTextBoxWithoutEmail:
 
     def test_email_attached_without_email(self, get_textbox_locators_without_email):
         actual = get_textbox_locators_without_email.get('email')
-        # highlight(actual)
         expect(actual).not_to_be_attached()
 
     def test_current_address_without_email(self, get_textbox_locators_without_email):
@@ -67,11 +66,10 @@ class TestTextBoxWrongEmailOne:
 
     def test_current_address_wrong_email_one(self, get_textbox_locators_wrong_email_one):
         actual = get_textbox_locators_wrong_email_one.get('current_address')
-        highlight(actual)
         expect(actual).not_to_be_visible()
 
     def test_permanent_address_wrong_email_one(self, get_textbox_locators_wrong_email_one):
-        actual = get_textbox_locators_wrong_email_one.get('permanent_address').all_text_contents()[1]
+        actual = get_textbox_locators_wrong_email_one.get('permanent_address')
         expect(actual).not_to_be_visible()
 
 class TestTextBoxWrongEmailTwo:
@@ -84,11 +82,11 @@ class TestTextBoxWrongEmailTwo:
         expect(actual).not_to_be_visible()
 
     def test_current_address_wrong_email_two(self, get_textbox_locators_wrong_email_two):
-        actual = get_textbox_locators_wrong_email_two.get('current_address').all_text_contents()[1]
+        actual = get_textbox_locators_wrong_email_two.get('current_address')
         expect(actual).not_to_be_visible()
 
     def test_permanent_address_wrong_email_two(self, get_textbox_locators_wrong_email_two):
-        actual = get_textbox_locators_wrong_email_two.get('permanent_address').all_text_contents()[1]
+        actual = get_textbox_locators_wrong_email_two.get('permanent_address')
         expect(actual).not_to_be_visible()
 
 class TestRadioButton:

@@ -13,7 +13,7 @@ def do_operations_textbox(open_textbox_url, page):
 def do_operations_textbox_wrong_email_one(open_textbox_url, page):
     page.get_by_role(role='textbox', name='Full Name').fill("John Doe")
     page.get_by_role(role='textbox', name='name@example.com').fill("johndoe.com")
-    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, SA.")
+    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, USA.")
     page.locator('#permanentAddress').fill("Sometown, ST 12345, USA.")
 
 
@@ -21,14 +21,14 @@ def do_operations_textbox_wrong_email_one(open_textbox_url, page):
 def do_operations_textbox_wrong_email_two(open_textbox_url, page):
     page.get_by_role(role='textbox', name='Full Name').fill("John Doe")
     page.get_by_role(role='textbox', name='name@example.com').fill("john@doecom")
-    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, SA.")
+    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, USA.")
     page.locator('#permanentAddress').fill("Sometown, ST 12345, USA.")
 
 
 @pytest.fixture(scope="class")
 def do_operations_textbox_without_email(open_textbox_url, page):
     page.get_by_role(role='textbox', name='Full Name').fill("John Doe")
-    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, SA.")
+    page.get_by_role(role='textbox', name='Current Address').fill("Anytown, ST 12345, USA.")
     page.locator('#permanentAddress').fill("Sometown, ST 12345, USA.")
 
 

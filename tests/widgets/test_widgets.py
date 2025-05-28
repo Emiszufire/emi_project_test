@@ -1,4 +1,5 @@
 from playwright.sync_api import expect
+from tests.conftest import highlight
 
 
 class TestSlider:
@@ -28,5 +29,6 @@ class TestAccordian:
 class TestDatePicker:
     def test_date_picker(self, page, selection_date_picker):
         locator = page.locator("#datePickerMonthYearInput")
-        expect(locator).to_contain_text("April 7, 2000")
+        highlight(locator)
+        expect(locator).to_have_value("04/07/2000")
 

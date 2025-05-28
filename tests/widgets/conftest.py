@@ -27,7 +27,7 @@ def selection_date_picker(page, open_date_picker_url):
     page.locator("#datePickerMonthYearInput").click()
     page.get_by_role("combobox").nth(1).select_option("2000")
     page.get_by_role("combobox").nth(0).select_option("April")
-    page.get_by_role(role='button', name='7').click()
+    page.get_by_role("option", name="Choose Friday, April 7th,").click()
     page.get_by_text("7", exact=True)
 
 
