@@ -29,6 +29,3 @@ def selection_date_picker(page, open_date_picker_url):
     page.get_by_role("combobox").nth(0).select_option("April")
     page.get_by_role("option", name="Choose Friday, April 7th,").click()
     page.get_by_text("7", exact=True)
-
-
-

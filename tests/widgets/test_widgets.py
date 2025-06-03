@@ -26,9 +26,9 @@ class TestAccordian:
         locator = page.locator("#section3Content")
         expect(locator).to_contain_text("It is a long established")
 
+
 class TestDatePicker:
     def test_date_picker(self, page, selection_date_picker):
         locator = page.locator("#datePickerMonthYearInput")
         highlight(locator)
         expect(locator).to_have_value("04/07/2000")
-

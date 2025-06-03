@@ -1,6 +1,7 @@
 from playwright.sync_api import expect
 from tests.conftest import highlight
 
+
 class TestMainPage:
     def test_page_has_title(self, open_main_url, page):
         expect(page).to_have_title("DEMOQA")
@@ -55,6 +56,7 @@ class TestTextBoxWithoutEmail:
         expected = "Permanent Address:Sometown, ST 12345, USA."
         expect(actual).to_have_text(expected)
 
+
 class TestTextBoxWrongEmailOne:
     def test_name_wrong_email_one(self, get_textbox_locators_wrong_email_one):
         actual = get_textbox_locators_wrong_email_one.get('name')
@@ -72,6 +74,7 @@ class TestTextBoxWrongEmailOne:
         actual = get_textbox_locators_wrong_email_one.get('permanent_address')
         expect(actual).not_to_be_visible()
 
+
 class TestTextBoxWrongEmailTwo:
     def test_name_wrong_email_two(self, get_textbox_locators_wrong_email_two):
         actual = get_textbox_locators_wrong_email_two.get('name')
@@ -88,6 +91,7 @@ class TestTextBoxWrongEmailTwo:
     def test_permanent_address_wrong_email_two(self, get_textbox_locators_wrong_email_two):
         actual = get_textbox_locators_wrong_email_two.get('permanent_address')
         expect(actual).not_to_be_visible()
+
 
 class TestRadioButton:
     def test_yes_visible(self, open_radiobutton_url, page):

@@ -49,7 +49,7 @@ def browser(request):
     headed = request.config.getoption("--headed")
     slow_mo = request.config.getoption("--slowmo")
     with sync_playwright() as p:
-        browser = getattr(p, browser_name).launch(headless=not(headed), slow_mo=slow_mo, args=["--start-maximized"])
+        browser = getattr(p, browser_name).launch(headless=not (headed), slow_mo=slow_mo, args=["--start-maximized"])
         request.config.stash[metadata_key]["browser"] = f'{browser.browser_type.name} {browser.version}'
         request.config.stash[metadata_key]["browser headed"] = headed
         request.config.stash[metadata_key]["browser slow motion"] = slow_mo
@@ -95,6 +95,7 @@ def open_accordian_url(page):
 @pytest.fixture(scope="class")
 def open_date_picker_url(page):
     page.goto("https://demoqa.com/date-picker")
+
 
 def highlight(locator, thickness=3, style='solid', color='blue'):
     locator.evaluate(f"element => element.style.outline = '{str(thickness)}px {style} {color}'")
